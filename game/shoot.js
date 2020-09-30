@@ -2,7 +2,7 @@ var bulletTime1 = 0;
 
 var bullet_player1_material = new THREE.MeshLambertMaterial(
 {
-    color: 0x00ff00, 
+    color: 0x00ff00,
     transparent: false
 });
 
@@ -19,7 +19,7 @@ function shoot()
         bullet.angle = player1.direction;
         player1.bullets.push(bullet);
         bulletTime1 = clock.getElapsedTime();
-    } 
+    }
 
     // move bullets
     var moveDistance = 5;
@@ -63,10 +63,48 @@ function player_collision()
 
     if ( x > WIDTH )
         player1.graphic.position.x -= x - WIDTH;
+
+    if ( x < 0 )
+      // player1.graphic.position.x -= x - WIDTH;
+      player1.graphic.position.x -= x;
+
+
+
     if ( y < 0 )
         player1.graphic.position.y -= y;
     if ( y > HEIGHT )
         player1.graphic.position.y -= y - HEIGHT;
+
+
+
+    var min = enemy.graphic.position.x + WIDTH / 2 - 10;
+    var max = enemy.graphic.position.x + WIDTH / 2 + 10;
+
+    var min2 = enemy2.graphic.position.x + WIDTH / 2 - 10;
+    var max2 = enemy2.graphic.position.x + WIDTH / 2 + 10;
+
+    enemy.graphic.position.x++;
+
+    // console.log(x + " " + min + " " + max);
+    if (x <= max && x >= min) // Math Floor ptdrrrr I should have listened Robin and used a delta
+    {
+      // console.log("Br");
+      // enemy.dead();
+      player1.life--;
+    }
+
+    if (x <= max2 && x >= min2)
+    {
+      player1.life--;
+
+    }
+
+      // console.log(enemy.graphic.position.x + WIDTH / 2);
+      // console.log(x);
+    // if (x == enemy.graphic.position.x + WIDTH / 2)
+    // {
+    //   console.log("TEST");
+    // }
 
 }
 
@@ -90,9 +128,10 @@ function player_falling()
 
         if ((x > tileX)
             && (x < mtileX)
-            && (y > tileY) 
+            && (y > tileY)
             && (y < mtileY))
         {
+          player1.life--;
            player1.dead();
         }
     }

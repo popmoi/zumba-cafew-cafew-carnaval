@@ -24,9 +24,15 @@ function init()
 
     noGround = [];
     ground = new Ground(0xffffff, WIDTH, HEIGHT, 10);
-    
+
     player1 = new Player("player1", 0xffff00, new THREE.Vector2(50, 0), 0);
     scene.add(player1.graphic);
+
+    enemy = new Player("enemy", 0xffff00, new THREE.Vector2(50, 0), 0);
+    scene.add(enemy.graphic);
+
+    enemy2 = new Player("enemy2", 0xffff00, new THREE.Vector2(50, 0), 0);
+    scene.add(enemy2.graphic);
 
     light1 = new Light("sun", 0xffffff, "0,0,340");
     scene.add(light1);
@@ -35,20 +41,35 @@ function init()
 function Ground(color, size_x, size_y, nb_tile)
 {
     colors = Array(0xff0000, 0x00ff00, 0x0000ff, 0x000000);
+    // colors = Array(0xff007f, 0xff007f, 0xff007f, 0xff007f);
 
     sizeOfTileX = size_x / nb_tile;
     minX = -(size_x/2);
     maxX = (size_x/2);
-    
+
     sizeOfTileY = size_y / nb_tile;
     minY = -(size_y/2);
     maxY = (size_y/2);
 
+    var toto = 10
+
     for (x = minX; x <= maxX; x = x+sizeOfTileX){
         for (y = minY; y <= maxY; y = y+sizeOfTileY){
 
+          // console.log(y)
+
             color = colors[Math.floor(Math.random()*colors.length)];
-       
+
+            if (y == 0)
+            {
+              toto--;
+            }
+
+            if (y == 0 && toto == 3)
+            {
+              color = 0xff007f;
+            }
+
             if (0x000000 != color)
             {
                 tmpGround = new THREE.Mesh(
@@ -62,11 +83,30 @@ function Ground(color, size_x, size_y, nb_tile)
                 noGround.push([x, y]);
         }
     }
+
+    // for (x = minX; x <= maxX; x = x+sizeOfTileX){
+    //     for (y = minY; y <= maxY; y = y+sizeOfTileY){
+    //
+    //         color = colors[Math.floor(Math.random()*colors.length)];
+    //
+    //         if (0x000000 != color)
+    //         {
+    //             tmpGround = new THREE.Mesh(
+    //             new THREE.PlaneGeometry(sizeOfTileX-10, sizeOfTileY-10),
+    //             new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.6}));
+    //             tmpGround.position.x = x;
+    //             tmpGround.position.y = y;
+    //             scene.add(tmpGround);
+    //         }
+    //         else
+    //             noGround.push([x, y]);
+    //     }
+    // }
 }
 
 function Light(name, color, position)
 {
-    pointLight = new THREE.PointLight(color, 50, 350);
+    pointLight = new THREE.PointLight(color, 50, 3500);
 
     pointLight.position.x = position.split(',')[0];
     pointLight.position.y = position.split(',')[1];
